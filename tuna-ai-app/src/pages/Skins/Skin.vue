@@ -103,6 +103,8 @@ export default {
     // 이미지를 담기 위한 변수 선언
     const file = ref(null)
     let image = ref()
+    let idx = ref()
+    let editor = ref('메모를 작성해 주세요')
 
     // 브라우저에서는 fs 모듈을 사용 불가
     // axios로 이미지 읽어 들인 후 base 64로 변환 처리
@@ -121,6 +123,7 @@ export default {
     onActivated(() => {
       let route = useRoute()
       image.value = store.getters.getImage(route.params.id)
+      idx.value = store.getters.getIndex(route.params.id)
     })
     // 해당 페이지를 닫을 경우 이미지 변수 null 처리
     onDeactivated(() => {
@@ -138,6 +141,17 @@ export default {
       var fileName = fileNameSplit[0]
 
       return fileName
+    }
+
+    function saveWork () {
+      $q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done'
+      })
+      store.state.images[idx.value].memo = editor.value
+      console.log('메모 저장', store.state.images)
     }
 
     // 데이터 불러들여 처리
@@ -193,16 +207,8 @@ export default {
       image,
       data,
       loadData,
-      editor: ref('After you define a new button,' +
-        ' you have to make sure to put it in the toolbar too!'),
-      saveWork () {
-        $q.notify({
-          message: 'Saved your text to local storage',
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done'
-        })
-      }
+      editor,
+      saveWork
     }
   }
 }

@@ -90,6 +90,11 @@ const state = reactive({
 const getters = {
   getImage(imageId) {
     return state.images.filter(image => image.id === imageId)[0]
+  },
+
+  getIndex(imageId) {
+    // return state.images.map(function(d) { return d['id']}).indexOf(imageId)
+    return state.images.map(image => { return image['id']}).indexOf(imageId)
   }
 }
 
