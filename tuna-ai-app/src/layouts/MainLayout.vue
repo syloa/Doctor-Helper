@@ -3,7 +3,7 @@
     view="lHh Lpr lFf"
     :class="{ 'ios-browser-swiping-back' : store.state.iosBrowserSwipingBack }"
   >
-    <q-footer bordered class="bg-white text-primary">
+    <!-- <q-footer bordered class="bg-white text-primary">
       <q-tabs
         active-color="primary"
         indicator-color="transparent"
@@ -19,7 +19,7 @@
         />
 
       </q-tabs>
-    </q-footer>
+    </q-footer> -->
 
     <q-page-container>
       <router-view v-slot="{ Component }">

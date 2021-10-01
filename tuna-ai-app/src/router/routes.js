@@ -84,6 +84,14 @@ const routes = [
             component: () => import('pages/Label/Bottom2.vue'),
           }
         ]
+      },
+      {
+        path: '/Notice',
+        component: () => import('pages/Notice/Notice.vue'),
+      },
+      {
+        path: '/Settings',
+        component: () => import('pages/Settings/Settings.vue'),
       }
     ]
   },

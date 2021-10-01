@@ -19,11 +19,11 @@ export default {
     const $router = useRouter()
 // 내장함수로 쓰겠다 = $
     function goHome() {
-      $router.push('/home') // 히스토리가 쌓인다 (저장O
+      $router.push('/home') // 히스토리가 쌓인다 (저장O (뒤로가기 가능)
  
       // $router.replace('/home') // 히스토리가 안쌓이는것
       // $router.go('/home') 
-      // 가면서 해당 페이지 refresh, -1을쓰면 뒤로한칸 그냥1쓰면 앞으로 한칸(히스토리가 쌓였을 때 )
+      // 가면서 해당 페이지 refresh, 스택쌓임. -1을쓰면 뒤로한칸 그냥1쓰면 앞으로 한칸(히스토리가 쌓였을 때)
     }
 
     return {

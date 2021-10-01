@@ -3,14 +3,17 @@
     <page-header>
       <template #buttons-left>
         <page-header-btn-back
-          label="흉부 X-ray"
+          label="뒤로 가기"
         />
       </template>
       <template #title>상세 이미지</template>
       <template #buttons-right>
-        <page-header-btn-bookmark
-        label="."
-        />
+      <page-header-btn-bookmark
+      />
+      </template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
       </template>
     </page-header>
     <page-body>

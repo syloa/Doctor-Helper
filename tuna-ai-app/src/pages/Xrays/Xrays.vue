@@ -7,6 +7,10 @@
         />
       </template>
       <template #title>흉부 X-RAY</template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
+      </template>
     </page-header>
     <page-body>
       

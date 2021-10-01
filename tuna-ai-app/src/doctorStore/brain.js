@@ -8,7 +8,10 @@ const state = reactive({
       caption: '환자번호 0001',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id2',
@@ -16,7 +19,11 @@ const state = reactive({
       caption: '환자번호 0002',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
+    
     },
     {
       id: 'id3',
@@ -24,7 +31,10 @@ const state = reactive({
       caption: '환자번호 0003',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id4',
@@ -32,7 +42,10 @@ const state = reactive({
       caption: '환자번호 0004',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id5',
@@ -40,7 +53,10 @@ const state = reactive({
       caption: '환자번호 0005',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id6',
@@ -48,7 +64,10 @@ const state = reactive({
       caption: '환자번호 0006',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id7',
@@ -56,7 +75,10 @@ const state = reactive({
       caption: '환자번호 0007',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id8',
@@ -64,7 +86,10 @@ const state = reactive({
       caption: '환자번호 0008',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id9',
@@ -72,7 +97,10 @@ const state = reactive({
       caption: '환자번호 0009',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     },
     {
       id: 'id10',
@@ -80,7 +108,10 @@ const state = reactive({
       caption: '환자번호 0010',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹'
+      memo: '야옹',
+      bookmarkbool: false,
+      predbool: false,
+      memobool: false
     }
   ],
   usePageTransition: false,

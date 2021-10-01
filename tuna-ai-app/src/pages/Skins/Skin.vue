@@ -3,13 +3,15 @@
     <page-header>
       <template #buttons-left>
         <page-header-btn-back
-          label="피부암"
         />
       </template>
-      <template #title>상세 이미지</template>
+      <template #title>피부암 진단</template>
       <template #buttons-right>
       <page-header-btn-bookmark
-        label=""
+      />
+      </template>
+      <template #buttons-menu>
+      <page-header-btn-menu
       />
       </template>
     </page-header>
@@ -50,12 +52,12 @@
             <br>나이 : {{image.age}}</div>
             <q-img
               :src="data.img_url"
-              class="no-pointer-events"
               no-transition
               no-spinner
               style="width:360px"
+              @click="imagePopup(data.img_url)"
             />
-            <div class="q-pa-md q-gutter-sm">
+            <div class="q-pa-md q-gutter-sm" style="width:360px">
             <q-editor
               v-model="editor"
               :definitions="{
@@ -74,13 +76,62 @@
             
           </div>
           
+          <!-- <div class="q-pa-md q-gutter-sm">
+              <q-btn label="Maximized" color="primary" @click="dialog = true" />
 
+              <q-dialog
+                v-model="dialog"
+                persistent
+                :maximized="maximizedToggle"
+                transition-show="slide-up"
+                transition-hide="slide-down"
+              >
+                <q-card class="bg-primary text-white">
+                  <q-bar>
+                    <q-space />
+
+                    <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
+                      <q-tooltip v-if="maximizedToggle" class="bg-white text-primary">Minimize</q-tooltip>
+                    </q-btn>
+                    <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
+                      <q-tooltip v-if="!maximizedToggle" class="bg-white text-primary">Maximize</q-tooltip>
+                    </q-btn>
+                    <q-btn dense flat icon="close" v-close-popup>
+                      <q-tooltip class="bg-white text-primary">Close</q-tooltip>
+                    </q-btn>
+                  </q-bar>
+
+                  <q-card-section>
+                    <div class="text-h6">Alert</div>
+                  </q-card-section>
+
+                  <q-card-section class="q-pt-none">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+                  </q-card-section>
+                </q-card>
+              </q-dialog>
+            </div>         -->
           
           </div>
         </div>
       </transition>
     </page-body>
   </page>
+
+  <q-dialog 
+        v-model="imageDialog"
+        full-width
+    >
+        <q-card class="bg-primary text-white" style="width: 1024px; max-width: 80vw;">      
+          <q-bar>
+            <q-space />
+            <q-btn dense flat icon="close" v-close-popup>
+            <q-tooltip class="bg-white text-primary">Close</q-tooltip>
+            </q-btn>
+            </q-bar>      
+            <img :src="imageUrl"/>
+        </q-card>
+    </q-dialog>
 </template>
 
 
@@ -88,7 +139,7 @@
 <script>
 import { onActivated, onDeactivated, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import store from 'src/doctorStore/skin.js'
+import storeSkin from 'src/doctorStore/skin.js'
 import { axios, api3 } from 'boot/axios'
 import { useQuasar } from 'quasar'
 
@@ -102,9 +153,17 @@ export default {
     const data = ref(null)
     // 이미지를 담기 위한 변수 선언
     const file = ref(null)
+
     let image = ref()
     let idx = ref()
     let editor = ref('메모를 작성해 주세요')
+    let imageDialog = ref(false)
+    let imageUrl = ref(null)
+    const imagePopup = (imgUrl) => {
+            imageUrl.value = imgUrl
+            imageDialog.value = true
+            console.log("imgUrl")
+        }
 
     // 브라우저에서는 fs 모듈을 사용 불가
     // axios로 이미지 읽어 들인 후 base 64로 변환 처리
@@ -122,8 +181,8 @@ export default {
     // 해당 페이지를 오픈 할 경우 활성화
     onActivated(() => {
       let route = useRoute()
-      image.value = store.getters.getImage(route.params.id)
-      idx.value = store.getters.getIndex(route.params.id)
+      image.value = storeSkin.getters.getImage(route.params.id)
+      idx.value = storeSkin.getters.getIndex(route.params.id)
     })
     // 해당 페이지를 닫을 경우 이미지 변수 null 처리
     onDeactivated(() => {
@@ -150,9 +209,17 @@ export default {
         textColor: 'white',
         icon: 'cloud_done'
       })
-      store.state.images[idx.value].memo = editor.value
-      console.log('메모 저장', store.state.images)
+      storeSkin.state.images[idx.value].memo = editor.value
+      console.log('메모 저장', storeSkin.state.images)
     }
+
+
+  
+    function init() {
+      console.log(idx.value)
+    }
+
+    function bookmark(){}
 
     // 데이터 불러들여 처리
     async function loadData () {
@@ -203,12 +270,17 @@ export default {
   
 
     return {
-      store,
+      storeSkin,
       image,
       data,
       loadData,
       editor,
-      saveWork
+      saveWork,
+      // dialog: ref(false),
+      // maximizedToggle: ref(true),
+      imagePopup,
+      imageDialog,
+      imageUrl
     }
   }
 }

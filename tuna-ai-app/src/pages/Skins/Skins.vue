@@ -1,15 +1,78 @@
 <template>
   <page>
     <page-header>
-      <template #buttons-home>
-        <page-header-btn-home
-          label="홈"
+      <template #buttons-left>
+        <page-header-btn-back
         />
       </template>
-      <template #title>피부암</template>
+      <template #title>피부 이미지</template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
+      </template>
     </page-header>
     <page-body>
-      
+        <div class="q-gutter-y-md" style="max-width: 600px">
+        <q-card>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="진단 대기" label="진단 대기" />
+          <q-tab name="진단 완료" label="진단 완료" />
+        </q-tabs>
+        <q-separator />
+        <q-tab-panels v-model="tab" >
+          <q-tab-panel name="진단 대기">
+            <div class="row">
+              <router-link
+          v-for="image in storeSkin.state.images.filter(image => image.predbool === false)"
+          :key="image.id"
+          :to="`/skins/${ image.id }`"
+          class="col-6"
+        >
+          <q-img
+            :src="image.url"
+            :ratio="1"
+          >
+            <div class="absolute-top text-center">
+              {{ image.caption}}
+            </div>
+          </q-img>
+        </router-link>
+
+            </div>
+          </q-tab-panel>
+
+          <q-tab-panel name="진단 완료">
+            <div class="row">
+              <router-link
+          v-for="image in storeSkin.state.images.filter(image => image.predbool === true)"
+          :key="image.id"
+          :to="`/skins/${ image.id }`"
+          class="col-6"
+        >
+          <q-img
+            :src="image.url"
+            :ratio="1"
+          >
+            <div class="absolute-top text-center">
+              {{ image.caption}}}
+            </div>
+          </q-img>
+        </router-link>
+
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
+      </div>
+
     <!-- <div class="q-pa-md">
       <q-carousel
         animated
@@ -34,7 +97,7 @@
       </div>
       <br>
     </div> -->
-    
+<!--     
       <div class="row">
         <router-link
           v-for="image in store.state.images"
@@ -51,7 +114,7 @@
             </div>
           </q-img>
         </router-link>
-      </div>
+      </div> -->
 
 
     </page-body>
@@ -59,7 +122,7 @@
 </template>
 
 <script>
-import store from 'src/doctorStore/skin.js'
+import storeSkin from 'src/doctorStore/skin.js'
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 
@@ -67,6 +130,7 @@ export default {
   name: 'Skins',
   setup() {
     const $q = useQuasar()
+    const tab = ref('진단 대기')
 
     function saveLocal(){
       $q.localStorage.set(1, "테스트")
@@ -78,10 +142,11 @@ export default {
     }
 
     return {
-      store,
+      storeSkin,
       slide: ref(1),
       saveLocal,
-      getLocal
+      getLocal,
+      tab: ref('진단 대기')
     }
   }
 }

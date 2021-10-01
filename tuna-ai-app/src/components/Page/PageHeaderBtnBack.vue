@@ -1,6 +1,6 @@
 <template>
   <q-btn
-    @click="useGoBack"
+    @click="Back"
     icon="chevron_left"
     color="primary"
     flat
@@ -12,12 +12,21 @@
 
 <script>
 import useGoBack from 'src/use/useGoBack'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'PageHeaderBtnBack',
   setup() {
+    const $router = useRouter()
+    
+
+    function Back(){
+      $router.go(-1)
+    }
+
+
     return {
-      useGoBack
+      Back,
     }
   }
 }

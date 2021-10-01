@@ -6,6 +6,7 @@ const globalComponents = {
   'page-header-btn-back': require('components/Page/PageHeaderBtnBack').default,
   'page-header-btn-home': require('components/Page/PageHeaderBtnHome').default,
   'page-header-btn-bookmark': require('components/Page/PageHeaderBtnBookmark').default,
+  'page-header-btn-menu': require('components/Page/PageHeaderBtnMenu').default,
   'page-body': require('components/Page/PageBody').default,
 }
 

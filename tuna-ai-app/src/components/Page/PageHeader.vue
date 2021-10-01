@@ -5,10 +5,11 @@
     <div class="q-toolbar row no-wrap items-center">
       <slot name="buttons-left" />
       <slot name="buttons-home" />
-      <q-space></q-space><slot name="buttons-right" />
       <div class="page-header-title q-toolbar__title ellipsis text-body1 q-pl-none">
-        <slot name="title" />
-      </div>
+        <b><slot name="title" /></b>
+        </div>
+        <q-space></q-space><slot name="buttons-right" /><slot name="buttons-menu" />
+      
 
     </div>
   </header>

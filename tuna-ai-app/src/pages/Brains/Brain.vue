@@ -9,8 +9,11 @@
       <template #title>상세 이미지</template>
       <template #buttons-right>
       <page-header-btn-bookmark
-         label=""
-       />
+      />
+      </template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
       </template>
     </page-header>
     <page-body>

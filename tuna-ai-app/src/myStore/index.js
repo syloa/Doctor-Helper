@@ -2,18 +2,18 @@ import { reactive } from 'vue'
 // state 밑에 images, 그 밑에 배열
 const state = reactive({
   navItems: [
-    {
-      root: '/home',
-      to: '/home',
-      icon: 'las la-home',
-      label: '홈'
-    },
-    {
-      root: '/questions',
-      to: '/questions',
-      icon: 'las la-question-circle',
-      label: '질문'
-    },
+    // {
+    //   root: '/home',
+    //   to: '/home',
+    //   icon: 'las la-home',
+    //   label: '홈'
+    // },
+    // {
+    //   root: '/questions',
+    //   to: '/questions',
+    //   icon: 'las la-question-circle',
+    //   label: '질문'
+    // },
     // {
     //   root: '/xrays',
     //   to: '/xrays',

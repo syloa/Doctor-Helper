@@ -27,12 +27,12 @@ export default boot(({ router }) => {
     }
     
     // update to property on nav item, whenever we change route
-    updateNavItem()
+    // updateNavItem()
 
-    function updateNavItem() {
-      const navItemIndex = store.state.navItems.findIndex(navItem => navItem.root === toRootPath)
-      store.state.navItems[navItemIndex].to = to.path
-    }
+    // function updateNavItem() {
+    //   const navItemIndex = store.state.navItems.findIndex(navItem => navItem.root === toRootPath)
+    //   store.state.navItems[navItemIndex].to = to.path
+    // }
 
   })
 })

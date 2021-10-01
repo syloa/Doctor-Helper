@@ -2,6 +2,15 @@
   <page>
     <page-header>
       <template #title>집</template>
+      <template #buttons-right>
+      <page-header-btn-bookmark
+        label=""
+      />
+      </template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
+      </template>
     </page-header>
     <page-body>
       <div class="q-pa-xs q-gutter-md row items-start " style="background-color: #fbfbfb;">
@@ -57,49 +66,26 @@
           align="center" 
           bordered  
           flat 
-          style="width: 110px; height: 135px; border-radius: 13px; "
+          style="width: 360px; height: 135px; border-radius: 13px; "
         >
             <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" /> 
             <br>
             <br>
             <span class="text-weight-bold text-size-14">흉부 X-RAY</span>
         </q-card>
-        <q-card  @click="goBrain" bordered  flat align="center" style="width: 110px; height: 135px; border-radius: 13px;">
+        <q-card  @click="goBrain" bordered  flat align="center" style="width: 360px; height: 135px; border-radius: 13px;">
             <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" />  
             <br>
             <br>
             <span class="text-weight-bold text-size-14">뇌종양</span>
         </q-card>
-        <q-card  @click="goSkin" bordered  flat align="center" style="width: 110px; height: 135px; border-radius: 13px;">
+        <q-card  @click="goSkin" bordered  flat align="center" style="width: 360px; height: 135px; border-radius: 13px;">
             <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" />  
             <br>
             <br>
             <span class="text-weight-bold text-size-14">피부암</span>
         </q-card>
     </div>
-    <!-- <div class="text-weight-medium  text-h6" style="font-weight: 500; margin-left: 20px ;background-color: #fbfbfb;">
-        <span style="color: #e4363e; width: 2px">&#124;</span> 닥터 핼프 서비스 #2
-    </div>
-    <div class="q-pa-md row items-start q-gutter-sm justify-between" style="margin-left: 0px">
-        <q-card align="center" bordered  flat style="width: 110px; height: 135px; border-radius: 13px; ">
-            <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" /> 
-            <br>
-            <br>
-            <span class="text-weight-bold text-size-14">흉부 X-RAY</span>
-        </q-card>
-        <q-card  bordered  flat align="center" style="width: 110px; height: 135px; border-radius: 13px;">
-            <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" />  
-            <br>
-            <br>
-            <span class="text-weight-bold text-size-14">뇌종양</span>
-        </q-card  >
-        <q-card  bordered  flat align="center" style="width: 110px; height: 135px; border-radius: 13px;">
-            <q-img style="width: 50px; margin-top: 18px" src="~assets/icons/service.svg" />  
-            <br>
-            <br>
-            <span class="text-weight-bold text-size-14">피부암</span>
-        </q-card  >
-    </div> -->
 <!-- 
     <div class="q-pa-lg">
 

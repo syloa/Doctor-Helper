@@ -7,6 +7,10 @@
         />
       </template>
       <template #title>뇌종양</template>
+      <template #buttons-menu>
+      <page-header-btn-menu
+      />
+      </template>
     </page-header>
     <page-body>
       
