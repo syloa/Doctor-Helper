@@ -1,7 +1,5 @@
 <template>
   <q-btn
-    @click="useGoBack"
-    icon="bookmark_border"
     color="primary"
     flat
     rounded
@@ -12,12 +10,25 @@
 
 <script>
 import useGoBack from 'src/use/useGoBack'
+import { useRouter } from 'vue-router'
+import {ref} from 'vue'
 
 export default {
   name: 'PageHeaderBtnBookmark',
   setup() {
+    const $router = useRouter()
+    const bookmarkicon = ref(false)
+
+    function bookmark () {
+      bookmarkicon.value = !bookmarkicon.value
+      console.log(bookmarkicon.value)
+    }
+
+    
     return {
-      useGoBack
+      useGoBack,
+      bookmark,
+      bookmarkicon
     }
   }
 }

@@ -8,10 +8,11 @@ const state = reactive({
       caption: '환자번호 0001',
       date: '2021/03/01',
       age: '25',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id2',
@@ -19,10 +20,11 @@ const state = reactive({
       caption: '환자번호 0002',
       date: '2021/03/01',
       age: '25',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id3',
@@ -30,10 +32,11 @@ const state = reactive({
       caption: '환자번호 0003',
       date: '2021/03/01',
       age: '75',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id4',
@@ -41,10 +44,11 @@ const state = reactive({
       caption: '환자번호 0004',
       date: '2021/03/01',
       age: '65',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id5',
@@ -52,10 +56,11 @@ const state = reactive({
       caption: '환자번호 0005',
       date: '2021/03/01',
       age: '25',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id6',
@@ -63,10 +68,11 @@ const state = reactive({
       caption: '환자번호 0006',
       date: '2021/03/01',
       age: '30',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id7',
@@ -74,10 +80,11 @@ const state = reactive({
       caption: '환자번호 0007',
       date: '2021/03/01',
       age: '35',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id8',
@@ -85,10 +92,11 @@ const state = reactive({
       caption: '환자번호 0008',
       date: '2021/03/01',
       age: '50',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id9',
@@ -96,10 +104,11 @@ const state = reactive({
       caption: '환자번호 0009',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     },
     {
       id: 'id10',
@@ -107,10 +116,11 @@ const state = reactive({
       caption: '환자번호 0010',
       date: '2021/03/01',
       age: '55',
-      memo: '야옹',
-      bookmarkbool: false,
-      predbool: false,
-      memobool: false
+      memo: '',
+      result: '',
+      bookmark: false,
+      detect: false,
+      detect_image: ''
     }
   ],
   usePageTransition: false,

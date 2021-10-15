@@ -106,7 +106,7 @@ export default {
     
     return {
       hex: ref('#FF00FF'),
-      group: ref('op2'),
+      group: ref('op1'),
       group2: ref('op1'),
       color: ref('#f66363'),
       submitResult,
@@ -126,11 +126,11 @@ export default {
       },
       options: [
         {
-          label: '다크모드',
+          label: '라이트모드',
           value: 'op1'
         },
         {
-          label: '라이트모드',
+          label: '다크모드',
           value: 'op2'
         },
       ],

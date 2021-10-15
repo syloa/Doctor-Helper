@@ -109,7 +109,7 @@ transform = transforms.Compose([transforms.Resize((input_size, input_size)),
 
 def set_para_req_grad(model, grad):
     if grad == True:
-        for param in mode.parameters():
+        for param in model.parameters():
             param.requires_grad = False
 
 

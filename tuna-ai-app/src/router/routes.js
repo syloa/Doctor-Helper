@@ -92,7 +92,11 @@ const routes = [
       {
         path: '/Settings',
         component: () => import('pages/Settings/Settings.vue'),
-      }
+      },
+      {
+        path: '/Bookmarks',
+        component: () => import('pages/Bookmarks/Bookmarks.vue'),
+      },
     ]
   },
 

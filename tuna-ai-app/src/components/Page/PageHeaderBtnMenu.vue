@@ -58,24 +58,27 @@ export default {
       if (index===0) {
         $router.push('/home')
       }
-      // else if (index===1) {
-      //   $router.push('/xrays')
-      // }
-      // else if (index===2) {
-      //   $router.push('/brains')
-      // }
-      // else if (index===3) {
-      //   $router.push('/skins')
-      // }
-      // else if (index===4) {
-      //   $router.push('/settings')
-      // }
-      // else if (index===6) {
-      //   $router.push('/bookmarks')
-      // }
-      // else if (index===7) {
-      //   $router.push('/info')
-      // }
+      else if (index===1) {
+        $router.push('/xrays')
+      }
+      else if (index===2) {
+        $router.push('/brains')
+      }
+      else if (index===3) {
+        $router.push('/skins')
+      }
+      else if (index===4) {
+        $router.push('/settings')
+      }
+      else if (index===5) {
+        $router.push('/notice')
+      }
+      else if (index===6) {
+        $router.push('/bookmarks')
+      }
+      else if (index===7) {
+        $router.push('/info')
+      }
     }
 
     const menuList = [
@@ -85,34 +88,40 @@ export default {
         separator: true
       },
       {
-        icon: 'send',
-        label: 'Outbox',
+        icon: 'las la-robot',
+        label: '흉부질환 진단',
         separator: false
       },
       {
-        icon: 'delete',
-        label: 'Trash',
+        icon: 'las la-robot',
+        label: '뇌종양 진단',
         separator: false
       },
       {
-        icon: 'error',
-        label: 'Spam',
+        icon: 'las la-robot',
+        label: '피부암 진단',
         separator: true
       },
       {
         icon: 'settings',
-        label: 'Settings',
+        label: '설정',
         separator: false
       },
       {
         icon: 'feedback',
-        label: 'Send Feedback',
+        label: '공지사항',
+        separator: false
+      },
+      {
+        icon: 'star',
+        iconColor: 'primary',
+        label: '북마크',
         separator: false
       },
       {
         icon: 'help',
         iconColor: 'primary',
-        label: 'Help',
+        label: '도움말',
         separator: false
       }
     ]

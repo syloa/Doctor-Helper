@@ -3,7 +3,7 @@
     <page-header>
       <template #buttons-left>
         <page-header-btn-back
-          label="뇌종양"
+          label="뇌 CT"
         />
       </template>
       <template #title>상세 이미지</template>
@@ -27,7 +27,7 @@
           v-if="image"
           class="row justify-center"
         >
-          <div class="text-h5 q-mb-md">{{ image.caption }} {{image.age}}</div>
+          <div class="text-h5 q-mb-md">{{ image.caption }}</div>
           <q-img
             :src="image.url"
             class="no-pointer-events"
@@ -58,7 +58,7 @@
               no-spinner
               style="width:360px"
             />
-            <div class="q-pa-md q-gutter-sm">
+            <div class="q-pa-md q-gutter-sm" style="width:360px">
             <q-editor
               v-model="editor"
               :definitions="{
@@ -76,6 +76,53 @@
             />
           </div>
 
+          <div class="q-pr-md">
+            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('brain', imageId)" />
+          </div>
+          </div>
+          <div
+            v-else-if="image.detect"
+            class="row justify-center"
+          >
+            <div class="text-h6 q-mb-md">진단명 : {{ image.result }} <br/>
+            나이 : {{ image.age }} <br/>촬영일 : {{ image.date }}</div>
+            <div 
+            class="q-mb-md">
+            <q-img
+              v-if="image.detected_image"
+              :src="image.detected_image"
+              no-transition
+              no-spinner
+              style="width:380px"
+            >
+            </q-img>
+            </div>
+            <div class="q-pa-md q-gutter-sm" >
+            <q-editor
+              v-model="editor"
+              style="width:380px; height:220px"
+              :definitions="{
+                save: {
+                  tip: 'Save your work',
+                  icon: 'save',
+                  label: 'Save',
+                  handler: saveWork
+                }
+              }"
+              :toolbar="[
+                ['bold', 'italic', 'strike', 'underline'],
+                ['save']
+              ]"
+            />
+          </div>
+          <div class="q-pr-md">
+            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('brain', imageId)" />
+          </div>
+
+
+
           </div>
         </div>
         
@@ -86,11 +133,14 @@
 </template>
 
 <script>
-import { onActivated, onDeactivated, ref } from 'vue'
+import { onActivated, onDeactivated, onUpdated, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import store from 'src/doctorStore/brain.js'
+import storeBrain from 'src/doctorStore/brain.js'
 import { axios, api2 } from 'boot/axios'
 import { useQuasar } from 'quasar'
+import PageHeaderBtnBookmark from 'src/components/Page/PageHeaderBtnBookmark.vue'
+import DBs from 'src/doctorStore/MongoDB.js'
+
 
 export default {
   name: 'Brain',
@@ -104,7 +154,18 @@ export default {
     const file = ref(null)
     let image = ref()
     let idx = ref()
-    let editor = ref('메모를 작성해 주세요')
+    let text = ref('메모를 작성해 주세요.')
+    let detect = ref(false)
+    let bookmarks = ref(false)
+    let imageId = ref()
+    let route = useRoute()
+    let imageDialog = ref(false)
+    let imageUrl = ref(null)
+    const imagePopup = (imgUrl) => {
+            imageUrl.value = imgUrl
+            imageDialog.value = true
+            console.log("imgUrl")
+    }
 
     // 브라우저에서는 fs 모듈을 사용 불가
     // axios로 이미지 읽어 들인 후 base 64로 변환 처리
@@ -121,27 +182,26 @@ export default {
     
     // 해당 페이지를 오픈 할 경우 활성화
     onActivated(() => {
-      let route = useRoute()
-      image.value = store.getters.getImage(route.params.id)
-      idx.value = store.getters.getIndex(route.params.id)       
+      getBrains()
+      // let route = useRoute()
+      // image.value = storeBrain.getters.getImage(route.params.id)
+      // idx.value = storeBrain.getters.getIndex(route.params.id)       
+    })
+
+    onUpdated(() => {
+      getBrains()
     })
     // 해당 페이지를 닫을 경우 이미지 변수 null 처리
     onDeactivated(() => {
-      image.value = null
+      bookmarks.value = null
+      image.val= null
       data.value = null
+      imageId.value = null
+      detect.value = false
+      text.value = '메모를 작성해 주세요.'
+      
     })
 
-    function saveWork () {
-      $q.notify({
-        message: 'Saved your text to local storage',
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done'
-      })
-      store.state.images[idx.value].memo = editor.value
-      console.log('메모 저장', store.state.images)
-    }
-    
     function getFileName(fileUrl) {
       // URL을 가져와서 '/' 기준으로 배열 분리
       var filePathSplit = fileUrl.split('/');
@@ -151,6 +211,67 @@ export default {
       var fileName = fileNameSplit[0]
 
       return fileName
+    }
+
+    async function getBrains() {
+      image.value = await DBs.getImage('brain', route.params.id)
+      if ( typeof(image.value) != "undefined") {
+      imageId.value = image.value["_id"]
+      bookmarks.value = image.value["bookmark"]
+      detect.value = image.value["detect"]
+      text.value = image.value["memo"]
+      console.log('hi', image.value, imageId.value, bookmarks.value, detect.value, text.value)}
+      }
+
+    function getBrainList() {
+      var config = {
+        mothod: 'get',
+        url: 'brain',
+        headers: {  }
+      }
+    }
+
+    async function saveWork () {
+      $q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done'
+      })
+      // storeBrain.state.images[idx.value].memo = editor.value
+      // console.log('메모 저장', storeBrain.state.images)
+      await DBs.saveMemo('brain', imageId.value, text)
+    }
+
+    
+
+
+    function init() {
+      console.log('init', idx.value)
+    }
+
+
+    async function bookmark(){
+      bookmarks.value = !bookmarks.value
+      await DBs.saveBookmark('brain', imageId.value, bookmarks.value)
+      // if (storeSkin.state.images[idx.value].bookmark === true){
+      //   storeSkin.state.images[idx.value].bookmark = false
+      //   console.log('즐겨찾기 해제', storeSkin.state.images)
+      //   } 
+      // else if (storeSkin.state.images[idx.value].bookmark ===false){
+      //   storeSkin.state.images[idx.value].bookmark = true
+      //   console.log('즐겨찾기 등록', storeSkin.state.images)
+      // }
+    }
+
+    function sendEmail(){
+      $q.notify({
+          message: '결과를 저장했습니다.',
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done'
+        })
+      console.log('의견 보내기', storeBrain.state.images)
     }
 
     // 데이터 불러들여 처리
@@ -186,6 +307,7 @@ export default {
           // rest-api로 보낸 이미지 예측 결과값 받아오기
           console.log('response.data : ', response.data)
           data.value = response.data
+          DBs.saveDectection('brain', imageId.value, data.value.diagnosis, data.value.img_url)
           $q.loading.hide()
         })
         .catch((e) => {
@@ -202,12 +324,21 @@ export default {
   
 
     return {
-      store,
+      storeBrain,
       image,
       data,
       loadData,
-      editor,
-      saveWork
+      editor: text,
+      saveWork,
+      bookmark,
+      bookmarks,
+      imagePopup,
+      imageDialog,
+      imageUrl,
+      DBs,
+      imageId,
+      sendEmail
+      // getBrainList
     }
   }
 }

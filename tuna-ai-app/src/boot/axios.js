@@ -14,6 +14,8 @@ const api = axios.create({ baseURL: 'http://localhost:5000' })
 const api2 = axios.create({ baseURL: 'http://localhost:5001' })
 // skin
 const api3 = axios.create({ baseURL: 'http://localhost:5002' })
+// db 관련 api
+const apiDB = axios.create({ baseURL: 'http://localhost:3030' })
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -27,8 +29,10 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api2 = api2
 
   app.config.globalProperties.$api3 = api3
+
+  app.config.globalProperties.$apiDB = apiDB
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
 })
 
-export { axios, api, api2, api3 }
+export { axios, api, api2, api3, apiDB }

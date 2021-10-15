@@ -31,7 +31,7 @@
           <q-tab-panel name="진단 대기">
             <div class="row">
               <router-link
-          v-for="image in storeSkin.state.images.filter(image => image.predbool === false)"
+          v-for="image in skinList.filter(image => image.detect === false)"
           :key="image.id"
           :to="`/skins/${ image.id }`"
           class="col-6"
@@ -52,7 +52,7 @@
           <q-tab-panel name="진단 완료">
             <div class="row">
               <router-link
-          v-for="image in storeSkin.state.images.filter(image => image.predbool === true)"
+          v-for="image in skinList.filter(image => image.detect === true)"
           :key="image.id"
           :to="`/skins/${ image.id }`"
           class="col-6"
@@ -62,7 +62,7 @@
             :ratio="1"
           >
             <div class="absolute-top text-center">
-              {{ image.caption}}}
+              {{ image.caption}}
             </div>
           </q-img>
         </router-link>
@@ -122,31 +122,92 @@
 </template>
 
 <script>
-import storeSkin from 'src/doctorStore/skin.js'
-import { ref } from 'vue'
+// import storeSkin from 'src/doctorStore/skin.js'
+import { onActivated, onDeactivated, onUpdated, ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
+import { axios, apiDB } from 'boot/axios'
+import DBs from 'src/doctorStore/MongoDB.js'
 
 export default {
   name: 'Skins',
   setup() {
+    var skinList = ref([])
+
     const $q = useQuasar()
     const tab = ref('진단 대기')
 
-    function saveLocal(){
-      $q.localStorage.set(1, "테스트")
+    // function saveLocal(){
+    //   $q.localStorage.set(1, "테스트")
+    // }
+
+    // function getLocal() {
+    //   const value = $q.localStorage.getItem(1)
+    //   console.log("불러오기", value)
+    // }
+
+
+    onActivated(() => {
+      getSkins()
+      console.log(skinList)
+    })
+
+    onUpdated(() => {
+      getSkins()
+    })
+    
+    onDeactivated(() => {
+    })
+
+
+        
+    async function getSkins() {
+      try{
+        skinList.value =  await DBs.getList('skin') 
+        console.log('성공', skinList.value[0].url)
+      } catch (e) {
+        console.log('error', e)
+      }    
+      
     }
 
-    function getLocal() {
-      const value = $q.localStorage.getItem(1)
-      console.log("불러오기", value)
+
+    // async function getSkin () {
+    //   var config = {
+    //     method: 'get',
+    //     url: '/skin',
+    //     headers: {}
+    //   };
+
+    //   apiDB(config)
+    //   .then(function (response) {
+    //     // console.log(JSON.stringify(response.data));
+    //     skinList.value = response.data.data
+    //     console.log('aa', skinList.value)
+    //     console.log('bb', skinList.value.filter(image => image.bookmark === false))
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+    // }
+
+    function count() {
+      var cnt = 0
+      for (const obj in skinList.value) {
+        if (skinList.value[obj]["detect"] === false) {
+          cnt = cnt +1
+        }
+      }
+      return cnt
     }
 
     return {
-      storeSkin,
+      // storeSkin,
       slide: ref(1),
-      saveLocal,
-      getLocal,
-      tab: ref('진단 대기')
+      // saveLocal,
+      // getLocal,
+      tab,
+      skinList,
+      count
     }
   }
 }

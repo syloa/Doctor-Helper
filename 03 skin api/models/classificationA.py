@@ -32,7 +32,7 @@ torch.cuda.manual_seed(10)
 
 def set_para_req_grad(model, grad):
     if grad == True:
-        for param in mode.parameters():
+        for param in model.parameters():
             param.requires_grad = False
 
 

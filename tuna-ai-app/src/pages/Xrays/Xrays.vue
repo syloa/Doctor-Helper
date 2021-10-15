@@ -3,7 +3,6 @@
     <page-header>
       <template #buttons-home>
         <page-header-btn-home
-          label="홈"
         />
       </template>
       <template #title>흉부 X-RAY</template>
@@ -39,9 +38,26 @@
       <br>
     </div> -->
     
-      <div class="row">
-        <router-link
-          v-for="image in store.state.images"
+        <div class="q-gutter-y-md" style="max-width: 600px">
+        <q-card>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="진단 대기" label="진단 대기" />
+          <q-tab name="진단 완료" label="진단 완료" />
+        </q-tabs>
+        <q-separator />
+        <q-tab-panels v-model="tab" >
+          <q-tab-panel name="진단 대기">
+            <div class="row">
+              <router-link
+          v-for="image in chestList.filter(image => image.detect === false)"
           :key="image.id"
           :to="`/xrays/${ image.id }`"
           class="col-6"
@@ -55,7 +71,34 @@
             </div>
           </q-img>
         </router-link>
+
+            </div>
+          </q-tab-panel>
+
+          <q-tab-panel name="진단 완료">
+            <div class="row">
+              <router-link
+          v-for="image in chestList.filter(image => image.detect === true)"
+          :key="image.id"
+          :to="`/xrays/${ image.id }`"
+          class="col-6"
+        >
+          <q-img
+            :src="image.url"
+            :ratio="1"
+          >
+            <div class="absolute-top text-center">
+              {{ image.caption}}
+            </div>
+          </q-img>
+        </router-link>
+
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
       </div>
+
 
 
     </page-body>
@@ -63,29 +106,70 @@
 </template>
 
 <script>
-import store from 'src/doctorStore/xray.js'
-import { ref } from 'vue'
+// import storeXray from 'src/doctorStore/xray.js'
+import { onActivated, onDeactivated, onUpdated, ref, reactive } from 'vue'
 import { useQuasar } from 'quasar'
+import { axios, apiDB } from 'boot/axios'
+import DBs from 'src/doctorStore/MongoDB.js'
 
 export default {
   name: 'Xrays',
   setup() {
-    const $q = useQuasar()
+    var chestList = ref([])
 
-    function saveLocal(){
-      $q.localStorage.set(1, "테스트")
+    const $q = useQuasar()
+    const tab = ref('진단 대기')
+
+    // function saveLocal(){
+    //   $q.localStorage.set(1, "테스트")
+    // }
+
+    // function getLocal() {
+    //   const value = $q.localStorage.getItem(1)
+    //   console.log("불러오기", value)
+    // }
+
+    onActivated(() => {
+      getXrays()
+      console.log(chestList)
+    })
+
+    onUpdated(() => {
+      getXrays()
+    })
+
+    onDeactivated(() => {
+    })
+
+        
+    async function getXrays() {
+      try{
+        chestList.value =  await DBs.getList('chest') 
+        console.log('성공', chestList.value[0].url)
+      } catch (e) {
+        console.log('error', e)
+      }    
+      
     }
 
-    function getLocal() {
-      const value = $q.localStorage.getItem(1)
-      console.log("불러오기", value)
+
+    function count() {
+      var cnt = 0
+      for (const obj in chestList.value) {
+          if (chestList.value[obj]["detect"] === false) {
+          cnt = cnt +1
+        }
+      }
+      return cnt
     }
 
     return {
-      store,
+      // storeXray,
       slide: ref(1),
-      saveLocal,
-      getLocal
+      // saveLocal,
+      // getLocal,
+      tab,
+      chestList
     }
   }
 }

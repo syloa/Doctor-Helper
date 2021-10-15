@@ -8,7 +8,8 @@
       <template #title>피부암 진단</template>
       <template #buttons-right>
       <page-header-btn-bookmark
-      />
+      @click="bookmark"
+      :icon="bookmarks? 'bookmark' : 'bookmark_border'" />
       </template>
       <template #buttons-menu>
       <page-header-btn-menu
@@ -56,7 +57,8 @@
               no-spinner
               style="width:360px"
               @click="imagePopup(data.img_url)"
-            />
+            />              
+            
             <div class="q-pa-md q-gutter-sm" style="width:360px">
             <q-editor
               v-model="editor"
@@ -73,9 +75,54 @@
                 ['save']
               ]"
             />
-            
           </div>
           
+        <div class="q-pr-md"> 
+            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('skin', imageId)" />
+          </div>
+          </div>
+          <div
+            v-else-if="image.detect"
+            class="row justify-center"
+          >
+            <div class="text-h6 q-mb-md">진단명 : {{ image.result }} <br/>
+            나이 : {{ image.age }} <br/>촬영일 : {{ image.date }}</div>
+            <div 
+            class="q-mb-md">
+            <q-img
+              v-if="image.detected_image"
+              :src="image.detected_image"
+              no-transition
+              no-spinner
+              style="width:380px"
+              @click="imagePopup(image.detected_image)"
+            >
+            </q-img>
+            </div>
+            <div class="q-pa-md q-gutter-sm" style="width:360px">
+            <q-editor
+              v-model="editor"
+              style="width:380px; height:220px"
+              :definitions="{
+                save: {
+                  tip: 'Save your work',
+                  icon: 'save',
+                  label: 'Save',
+                  handler: saveWork
+                }
+              }"
+              :toolbar="[
+                ['bold', 'italic', 'strike', 'underline'],
+                ['save']
+              ]"
+            />
+          </div>
+          <div class="q-pr-md">
+            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('skin', imageId)" />
+          </div>
+          </div>          
           <!-- <div class="q-pa-md q-gutter-sm">
               <q-btn label="Maximized" color="primary" @click="dialog = true" />
 
@@ -113,12 +160,11 @@
             </div>         -->
           
           </div>
-        </div>
       </transition>
     </page-body>
   </page>
 
-  <q-dialog 
+  <!-- <q-dialog 
         v-model="imageDialog"
         full-width
     >
@@ -131,19 +177,22 @@
             </q-bar>      
             <img :src="imageUrl"/>
         </q-card>
-    </q-dialog>
+    </q-dialog> -->
 </template>
 
 
 
 <script>
-import { onActivated, onDeactivated, ref } from 'vue'
+import { onActivated, onDeactivated, onUpdated, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import storeSkin from 'src/doctorStore/skin.js'
 import { axios, api3 } from 'boot/axios'
 import { useQuasar } from 'quasar'
+import PageHeaderBtnBookmark from 'src/components/Page/PageHeaderBtnBookmark.vue'
+import DBs from 'src/doctorStore/MongoDB.js'
 
 export default {
+  components: { PageHeaderBtnBookmark },
   name: 'Skin',
   setup() {
     // 이미지를 읽어 들여 버퍼에서 변환 처리
@@ -156,7 +205,11 @@ export default {
 
     let image = ref()
     let idx = ref()
-    let editor = ref('메모를 작성해 주세요')
+    let text = ref('메모를 작성해 주세요.')
+    let detect = ref(false)
+    let bookmarks = ref(false)
+    let imageId = ref()
+    let route = useRoute()
     let imageDialog = ref(false)
     let imageUrl = ref(null)
     const imagePopup = (imgUrl) => {
@@ -165,7 +218,8 @@ export default {
             console.log("imgUrl")
         }
 
-    // 브라우저에서는 fs 모듈을 사용 불가
+
+    // 브라우저에서는 fs 모듈을 사용 불가d
     // axios로 이미지 읽어 들인 후 base 64로 변환 처리
     async function getBase64(url) {
       return axios
@@ -180,18 +234,28 @@ export default {
     
     // 해당 페이지를 오픈 할 경우 활성화
     onActivated(() => {
-      let route = useRoute()
-      image.value = storeSkin.getters.getImage(route.params.id)
-      idx.value = storeSkin.getters.getIndex(route.params.id)
+      getSkins()
+      // let route = useRoute()
+      // image.value = storeSkin.getters.getImage(route.params.id)
+      // idx.value = storeSkin.getters.getIndex(route.params.id)
+      // console.log('오픈', storeSkin.state.images)
+    })
+
+    onUpdated(() => {
+      getSkins()
     })
     // 해당 페이지를 닫을 경우 이미지 변수 null 처리
     onDeactivated(() => {
+      bookmarks.value = null
       image.value = null
       data.value = null
+      imageId.value = null
+      detect.value = false
+      text.value = '메모를 작성해 주세요.'
+      // console.log('닫음', storeSkin.state.images)
     })
 
-
-    function getFileName(fileUrl) {
+    async function getFileName(fileUrl) {
       // URL을 가져와서 '/' 기준으로 배열 분리
       var filePathSplit = fileUrl.split('/');
       // 배열 분리 후 마지막 배열에서 다시 '.' 기준으로 분리
@@ -202,31 +266,63 @@ export default {
       return fileName
     }
 
-    function saveWork () {
+    async function getSkins() {
+     image.value = await DBs.getImage('skin', route.params.id)
+     if ( typeof(image.value) != "undefined") {
+     imageId.value = image.value["_id"]
+     bookmarks.value = image.value["bookmark"]
+     detect.value = image.value["detect"]
+     text.value = image.value["memo"]
+     console.log('hi', image.value, imageId.value, bookmarks.value, detect.value, text.value)}
+    }
+
+    async function saveWork () {
       $q.notify({
         message: 'Saved your text to local storage',
         color: 'green-4',
         textColor: 'white',
         icon: 'cloud_done'
       })
-      storeSkin.state.images[idx.value].memo = editor.value
-      console.log('메모 저장', storeSkin.state.images)
+      // storeSkin.state.images[idx.value].memo = editor.value
+      // storeSkin.state.images[idx.value].memobool = true
+      await DBs.saveMemo('skin', imageId.value, text)
+      // console.log('메모 저장', storeSkin.state.images)
     }
-
-
+    
   
     function init() {
-      console.log(idx.value)
+      console.log('init', idx.value)
     }
 
-    function bookmark(){}
+    async function bookmark(){
+      bookmarks.value = !bookmarks.value
+      await DBs.saveBookmark('skin', imageId.value, bookmarks.value)
+      // if (storeSkin.state.images[idx.value].bookmark === true){
+      //   storeSkin.state.images[idx.value].bookmark = false
+      //   console.log('즐겨찾기 해제', storeSkin.state.images)
+      //   } 
+      // else if (storeSkin.state.images[idx.value].bookmark ===false){
+      //   storeSkin.state.images[idx.value].bookmark = true
+      //   console.log('즐겨찾기 등록', storeSkin.state.images)
+      // }
+    }
+
+    function sendEmail(){
+      $q.notify({
+          message: '결과를 저장했습니다.',
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done'
+        })
+      console.log('의견 보내기', storeSkin.state.images)
+    }
 
     // 데이터 불러들여 처리
     async function loadData () {
       // 이미지 담기
       // const file = await getBase64('/images/xrays/1.jpg')
       // url로 접근해서 처리하는 방식이라 파일명을 함수로 못가져옴
-      // 잘라서 가져오는 함수 구현
+      // 잘라서 가져오는 함수 구현 
       const fileName = getFileName(image.value.url)
       const file = await getBase64(image.value.url)
       const base64 = 'data:image/jpg;base64,' + file;
@@ -254,7 +350,11 @@ export default {
           // rest-api로 보낸 이미지 예측 결과값 받아오기
           console.log('response.data : ', response.data)
           data.value = response.data
-          $q.loading.hide()          
+          // 진단 여부와 결과 저장
+          DBs.saveDectection('skin', imageId.value, data.value.diagnosis, data.value.img_url)
+          // storeSkin.state.images[idx.value].predbool = true
+          // console.log('진단 여부 저장 완료', storeSkin.state.images)   
+          $q.loading.hide()        
         })
         .catch((e) => {
           // 처리 오류의 경우 화면에 notice
@@ -274,13 +374,18 @@ export default {
       image,
       data,
       loadData,
-      editor,
+      editor: text,
       saveWork,
+      bookmark,
+      bookmarks,
       // dialog: ref(false),
       // maximizedToggle: ref(true),
       imagePopup,
       imageDialog,
-      imageUrl
+      imageUrl,
+      DBs,
+      imageId,
+      sendEmail
     }
   }
 }

@@ -5,7 +5,7 @@
     
     <slot />
 
-    <div class="page-body-spacer-footer"></div>
+    <!-- <div class="page-body-spacer-footer"></div> -->
 
   </q-scroll-area>
 </template>
