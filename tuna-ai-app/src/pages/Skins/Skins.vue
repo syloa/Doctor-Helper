@@ -5,7 +5,7 @@
         <page-header-btn-back
         />
       </template>
-      <template #title>피부 이미지</template>
+      <template #title>{{ $t('title_skin') }}</template>
       <template #buttons-menu>
       <page-header-btn-menu
       />
@@ -23,8 +23,8 @@
           align="justify"
           narrow-indicator
         >
-          <q-tab name="진단 대기" label="진단 대기" />
-          <q-tab name="진단 완료" label="진단 완료" />
+          <q-tab name="진단 대기" :label="$t('tab_btn_wait')" />
+          <q-tab name="진단 완료" :label="$t('tab_btn_complete')" />
         </q-tabs>
         <q-separator />
         <q-tab-panels v-model="tab" >

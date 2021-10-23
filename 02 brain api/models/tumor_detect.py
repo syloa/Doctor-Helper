@@ -97,10 +97,10 @@ def tumor_detect(path):
             prediction.append(pred)
 
     if prediction[0] == 0:
-        diagnosis = "뇌종양입니다."
+        diagnosis = "tumor"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[0] == 1:
-        diagnosis = "이상 소견 없음"
+        diagnosis = "no_tumor"
         img_saved = None
         return img_saved, diagnosis

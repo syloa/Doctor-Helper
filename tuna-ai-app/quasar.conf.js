@@ -23,7 +23,8 @@ module.exports = configure(function (ctx) {
       'axios',
       'global-components',
       'router',
-      'particles'
+      'particles',
+      'i18n'
     ],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

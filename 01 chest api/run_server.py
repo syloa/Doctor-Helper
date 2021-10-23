@@ -211,8 +211,8 @@ def detect(save_img=False):
                     if save_img or view_img:  # Add bbox to image
                         # print("name : ==== ", names)
                         # print("int(cls) : ==== ", int(cls))
-                        diagnosis = ['대동맥확장', '무기폐', '석회화', '심장비대', '폐경결', '간질성폐질환',
-                                     '침윤', '폐불투명도', '결절/덩어리', '기타병변', '흉막삼출', '흉막비후', '기흉', '폐섬유증']
+                        diagnosis = ['cd1', 'cd2', 'cd3', 'cd4', 'cd5', 'cd6',
+                                     'cd7', 'cd8', 'cd9', 'cd10', 'cd11', 'cd12', 'cd13', 'cd14']
                         diagnosis_label = f'{diagnosis[int(cls)]} {conf:.2f}'
                         # label = f'{diagnosis[int(cls)]} {conf:.2f}'
                         label = f'{names[int(cls)]} {conf:.2f}'

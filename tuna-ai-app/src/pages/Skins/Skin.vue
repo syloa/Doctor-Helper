@@ -5,7 +5,7 @@
         <page-header-btn-back
         />
       </template>
-      <template #title>피부암 진단</template>
+      <template #title>{{ $t('title_skin') }}</template>
       <template #buttons-right>
       <page-header-btn-bookmark
       @click="bookmark"
@@ -39,7 +39,7 @@
             <q-btn 
               class="btn-fixed-width"
               color="primary" 
-              label="진단" 
+              :label="$t('detect_btn_detect')" 
               @click="loadData"
             />
           </div>
@@ -49,8 +49,8 @@
             v-if="data"
             class="row justify-center"
           >
-            <div class="text-h5 q-mb-md">진단명 : {{ data.diagnosis }}<br> 촬영일자 : {{image.date}}
-            <br>나이 : {{image.age}}</div>
+            <div class="text-h5 q-mb-md">{{ $t("detect_diagnosis") }} : {{ $t(data.diagnosis) }}
+            <br> {{ $t("detect_date") }} : {{image.date}}<br>{{ $t("detect_age") }} : {{image.age}}</div>
             <q-img
               :src="data.img_url"
               no-transition
@@ -78,16 +78,16 @@
           </div>
           
         <div class="q-pr-md"> 
-            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('skin', imageId)" />
+            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
           </div>
           </div>
           <div
             v-else-if="image.detect"
             class="row justify-center"
           >
-            <div class="text-h6 q-mb-md">진단명 : {{ image.result }} <br/>
-            나이 : {{ image.age }} <br/>촬영일 : {{ image.date }}</div>
+            <div class="text-h6 q-mb-md">{{ $t("detect_diagnosis") }} : {{ $t(image.result) }}
+            <br> {{ $t("detect_date") }} : {{image.date}}<br>{{ $t("detect_age") }} : {{image.age}}</div>
             <div 
             class="q-mb-md">
             <q-img
@@ -119,8 +119,8 @@
             />
           </div>
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('skin', imageId)" />
+            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
           </div>
           </div>          
           <!-- <div class="q-pa-md q-gutter-sm">
@@ -323,7 +323,7 @@ export default {
       // const file = await getBase64('/images/xrays/1.jpg')
       // url로 접근해서 처리하는 방식이라 파일명을 함수로 못가져옴
       // 잘라서 가져오는 함수 구현 
-      const fileName = getFileName(image.value.url)
+      const fileName = await getFileName(image.value.url)
       const file = await getBase64(image.value.url)
       const base64 = 'data:image/jpg;base64,' + file;
       const blob = await fetch(base64).then(res => res.blob())
@@ -336,9 +336,9 @@ export default {
       formData.append('file', blob); 
       formData.append('fileName', fileName);
 
-      $q.loading.show({
-        delay: 400 // ms
-      })
+      // $q.loading.show({
+        // delay: 400 // ms
+      // })
 
       // rest api로 예측 요청 넘기기
       api3.post('/predict', formData , { 
@@ -346,15 +346,17 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
        })
+       // promise 형태로 받아오겠다.
         .then((response) => {
           // rest-api로 보낸 이미지 예측 결과값 받아오기
           console.log('response.data : ', response.data)
           data.value = response.data
           // 진단 여부와 결과 저장
           DBs.saveDectection('skin', imageId.value, data.value.diagnosis, data.value.img_url)
+          console.log('ddd', data.value)   
           // storeSkin.state.images[idx.value].predbool = true
           // console.log('진단 여부 저장 완료', storeSkin.state.images)   
-          $q.loading.hide()        
+          // $q.loading.hide()        
         })
         .catch((e) => {
           // 처리 오류의 경우 화면에 notice
@@ -364,7 +366,7 @@ export default {
             message: '피부암 예측이 실패하였습니다.',
             icon: 'report_problem'
           })
-          $q.loading.hide()
+          // $q.loading.hide()
         })
     }
   

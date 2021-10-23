@@ -62,7 +62,7 @@ from flask_cors import CORS, cross_origin
 from models.classificationA import validate
 
 
-app = Flask(__name__, static_folder='./images')
+app = Flask(__name__, static_folder='./postman')
 CORS(app)
 port = 5002
 
@@ -76,7 +76,7 @@ def read_file():
     # app에서 넘겨준 form의 파일명
     file_name = request.form["fileName"]
     # 이미지 저장 폴더 생성 및 파일 저장
-    save_path = './images/' + 'original/' + file_name
+    save_path = './postman/' + 'original/' + file_name
     path_original = save_path
     save_file = save_path + "/" + file_name + ".jpg"
     return file, file_name, save_path, path_original, save_file
@@ -102,7 +102,7 @@ def predict():
         # if os.path.isdir(path_original):
         #     shutil.rmtree(path_original)  # 있으면 지우기
 
-        save_path = './images/' + 'original/' + file_name
+        save_path = './postman/' + 'original/' + file_name
         if os.path.isdir(save_path):
             shutil.rmtree(save_path)
 
@@ -119,6 +119,7 @@ def predict():
                     "img_url": f"http://localhost:{port}" + img_saved.strip("."),
                     # "detection" : detection,
                 }
+                print(img_saved)
             elif img_saved == None:
                 message = {
                     "diagnosis": diagnosis,

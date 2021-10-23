@@ -5,7 +5,7 @@
         <page-header-btn-back
         />
       </template>
-      <template #title>흉부 질환 진단</template>
+      <template #title>{{ $t('title_chest') }}</template>
       <template #buttons-right>
       <page-header-btn-bookmark
       />
@@ -26,7 +26,7 @@
           v-if="image"
           class="row justify-center"
         >
-          <div class="text-h5 q-mb-md">{{ image.caption }}</div>
+          <div class="text-h5 q-mb-md">{{$t("detect_caption")}}{{ image.caption }}</div>
           <q-img
             :src="image.url"
             class="no-pointer-events"
@@ -38,7 +38,7 @@
             <q-btn 
               class="btn-fixed-width"
               color="primary" 
-              label="진단" 
+              :label="$t('detect_btn_detect')" 
               @click="loadData"
             />
           </div>
@@ -48,8 +48,8 @@
             v-if="data"
             class="row justify-center"
           >
-            <div class="text-h5 q-mb-md">진단명 : {{ data.name }} ( {{ data.rate }})<br> 촬영일자 : {{image.date}}
-            <br>나이 : {{image.age}}</div>
+            <div class="text-h5 q-mb-md">{{ $t("detect_diagnosis") }} : {{ $t(data.name) }}
+            <br> {{ $t("detect_date") }} : {{image.date}}<br>{{ $t("detect_age") }} : {{image.age}}</div>
             <q-img
               :src="data.img_url"
               class="no-pointer-events"
@@ -57,7 +57,7 @@
               no-spinner
               style="width:360px"
             />
-                        <div class="q-pa-md q-gutter-sm" >
+                      <div class="q-pa-md q-gutter-sm" >
             <q-editor
               v-model="editor"
               style="width:380px; height:220px"
@@ -76,16 +76,16 @@
             />
           </div>
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('chest', imageId)" />
+            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
           </div>
           </div>
           <div
             v-else-if="image.detect"
             class="row justify-center"
           >
-            <div class="text-h6 q-mb-md">진단명 : {{ image.result }} <br/>
-            나이 : {{ image.age }} <br/>촬영일 : {{ image.date }}</div>
+            <div class="text-h5 q-mb-md">{{ $t("detect_diagnosis") }} : {{ $t(image.result) }}
+            <br> {{ $t("detect_date") }} : {{image.date}}<br>{{ $t("detect_age") }} : {{image.age}}</div>
             <div 
             class="q-mb-md">
             <q-img
@@ -116,8 +116,8 @@
             />
           </div>
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" label="의견 보내기" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" label="진단 리셋" @click="DBs.resetDectection('chest', imageId)" />
+            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
+            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
           </div>
 
 
@@ -287,7 +287,7 @@ export default {
           // rest-api로 보낸 이미지 예측 결과값 받아오기
           console.log('response.data : ', response.data)
           data.value = response.data
-          DBs.saveDectection('chest', imageId.value, data.value.diagnosis, data.value.img_url)
+          DBs.saveDectection('chest', imageId.value, data.value.name, data.value.img_url)
           $q.loading.hide()
         })
         .catch((e) => {

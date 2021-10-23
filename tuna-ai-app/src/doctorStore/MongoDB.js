@@ -1,4 +1,4 @@
-import { axios, api ,api2, api3 ,apiDB } from 'boot/axios'
+import { axios, api ,api2 ,apiDB } from 'boot/axios'
 import { onActivated, onDeactivated, ref, reactive} from 'vue'
 import { useRoute } from 'vue-router'
 

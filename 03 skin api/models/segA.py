@@ -62,8 +62,9 @@ def seg(path):
         # cv2.putText(new_img, 'Tumor Detected', (x,p y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,255,255), 2)
 
     new_img = cv2.cvtColor(new_img, cv2.COLOR_BGR2RGB)
+
     file_name = sorted(os.listdir(path), key=len)[0].split(".")[0]
-    save_path = './images/' + 'labeled/' + file_name
+    save_path = './postman/' + 'labeled/' + file_name
     if os.path.isdir(save_path):
         shutil.rmtree(save_path)  # 있으면 지우기
     os.makedirs(save_path)
