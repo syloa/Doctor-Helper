@@ -8,7 +8,8 @@
       <template #title>{{ $t('title_chest') }}</template>
       <template #buttons-right>
       <page-header-btn-bookmark
-      />
+      @click="bookmark"
+      :icon="bookmarks? 'bookmark' : 'bookmark_border'" />
       </template>
       <template #buttons-menu>
       <page-header-btn-menu
@@ -76,8 +77,11 @@
             />
           </div>
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
+            <q-btn no-caps push color="primary" icon="mail" text-color="white" :label="$t('detect_btn_email')" @click="sendEmail(true)" />
+            <!-- <QBtn no-caps push color="primary" icon="mail" :label="$t('detect_btn_email')" type="a" href="mailto:jgim7357@gmail.com"></QBtn> -->
+            &nbsp;
+            <q-btn no-caps push color="primary" icon="restart_alt" text-color="white" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
+            <!-- <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" /> -->
           </div>
           </div>
           <div
@@ -116,8 +120,11 @@
             />
           </div>
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
+            <q-btn no-caps push color="primary" icon="mail" text-color="white" :label="$t('detect_btn_email')" @click="sendEmail(true)" />
+            <!-- <QBtn no-caps push color="primary" icon="mail" :label="$t('detect_btn_email')" type="a" href="mailto:jgim7357@gmail.com"></QBtn> -->
+            &nbsp;
+            <q-btn no-caps push color="primary" icon="restart_alt" text-color="white" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" />
+            <!-- <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('chest', imageId)" /> -->
           </div>
 
 
@@ -244,14 +251,40 @@ export default {
       await DBs.saveBookmark('chest', imageId.value, bookmarks.value)
     }
 
-    function sendEmail(){
-      $q.notify({
-          message: '결과를 저장했습니다.',
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done'
-        })
-      console.log('의견 보내기', storeBrain.state.images)
+    function sendEmail (grid) {
+      $q.bottomSheet({
+        message: 'Bottom Sheet message',
+        grid,
+        actions:
+        [          
+          {
+            label: "Mail",
+            img: '/images/contact/4.png',
+            id: 'calendar'
+          },
+          {
+            label: "MicrosoftOutlook",
+            img: "/images/contact/1.png",
+            id: 'ms',
+          },
+          {
+            label: "Gmail",
+            img: '/images/contact/2.png',
+            id: 'keep'
+          },
+          // {
+          //   label: "Dialer",
+          //   img: '/images/contact/4.png',
+          //   id: 'calendar'
+          // }
+        ]
+      }).onOk(action => {
+        // console.log('Action chosen:', action.id)
+      }).onCancel(() => {
+        // console.log('Dismissed')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     }
 
     // 데이터 불러들여 처리

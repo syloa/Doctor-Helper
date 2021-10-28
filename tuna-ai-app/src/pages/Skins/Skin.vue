@@ -37,6 +37,7 @@
           />
           <div class="q-pa-lg">
             <q-btn 
+              no-caps push
               class="btn-fixed-width"
               color="primary" 
               :label="$t('detect_btn_detect')" 
@@ -62,6 +63,7 @@
             <div class="q-pa-md q-gutter-sm" style="width:360px">
             <q-editor
               v-model="editor"
+              style="height:200px"
               :definitions="{
                 save: {
                   tip: 'Save your work',
@@ -76,10 +78,12 @@
               ]"
             />
           </div>
-          
-        <div class="q-pr-md"> 
-            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
+        <div class="q-pr-md" q-gutter-sm> 
+            <q-btn no-caps push color="primary" icon="mail" text-color="white" :label="$t('detect_btn_email')" @click="sendEmail(true)" />
+            <!-- <QBtn no-caps push color="primary" icon="mail" :label="$t('detect_btn_email')" type="a" href="mailto:jgim7357@gmail.com"></QBtn> -->
+            &nbsp;
+            <q-btn no-caps push color="primary" icon="restart_alt" text-color="white" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
+            <!-- <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" /> -->
           </div>
           </div>
           <div
@@ -95,7 +99,7 @@
               :src="image.detected_image"
               no-transition
               no-spinner
-              style="width:380px"
+              style="width:360px"
               @click="imagePopup(image.detected_image)"
             >
             </q-img>
@@ -103,7 +107,7 @@
             <div class="q-pa-md q-gutter-sm" style="width:360px">
             <q-editor
               v-model="editor"
-              style="width:380px; height:220px"
+              style="height:200px"
               :definitions="{
                 save: {
                   tip: 'Save your work',
@@ -118,9 +122,15 @@
               ]"
             />
           </div>
+
+
           <div class="q-pr-md">
-            <q-btn color="primary" icon="mail" :label="$t('detect_btn_email')" @click="sendEmail" />
-            <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
+
+            <q-btn no-caps push color="primary" icon="mail" text-color="white" :label="$t('detect_btn_email')" @click="sendEmail(true)" />
+            <!-- <QBtn no-caps push color="primary" icon="mail" :label="$t('detect_btn_email')" type="a" href="mailto:jgim7357@gmail.com"></QBtn> -->
+            &nbsp;
+            <q-btn no-caps push color="primary" icon="restart_alt" text-color="white" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" />
+            <!-- <q-btn color="primary" icon="restart_alt" :label="$t('detect_btn_reset')" @click="DBs.resetDectection('skin', imageId)" /> -->
           </div>
           </div>          
           <!-- <div class="q-pa-md q-gutter-sm">
@@ -183,7 +193,7 @@
 
 
 <script>
-import { onActivated, onDeactivated, onUpdated, ref } from 'vue'
+import { onActivated, onDeactivated, onUpdated, Bottomsheet, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import storeSkin from 'src/doctorStore/skin.js'
 import { axios, api3 } from 'boot/axios'
@@ -194,11 +204,13 @@ import DBs from 'src/doctorStore/MongoDB.js'
 export default {
   components: { PageHeaderBtnBookmark },
   name: 'Skin',
+
   setup() {
     // 이미지를 읽어 들여 버퍼에서 변환 처리
     var Buffer = require('buffer/').Buffer
 
     const $q = useQuasar() 
+  
     const data = ref(null)
     // 이미지를 담기 위한 변수 선언
     const file = ref(null)
@@ -243,6 +255,7 @@ export default {
 
     onUpdated(() => {
       getSkins()
+
     })
     // 해당 페이지를 닫을 경우 이미지 변수 null 처리
     onDeactivated(() => {
@@ -307,16 +320,42 @@ export default {
       // }
     }
 
-    function sendEmail(){
-      $q.notify({
-          message: '결과를 저장했습니다.',
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done'
-        })
-      console.log('의견 보내기', storeSkin.state.images)
+    function sendEmail (grid) {
+      $q.bottomSheet({
+        message: 'Bottom Sheet message',
+        grid,
+        actions:
+        [          
+          {
+            label: "Mail",
+            img: '/images/contact/4.png',
+            id: 'calendar'
+          },
+          {
+            label: "MicrosoftOutlook",
+            img: "/images/contact/1.png",
+            id: 'ms',
+          },
+          {
+            label: "Gmail",
+            img: '/images/contact/2.png',
+            id: 'keep'
+          },
+          // {
+          //   label: "Dialer",
+          //   img: '/images/contact/4.png',
+          //   id: 'calendar'
+          // }
+        ]
+      }).onOk(action => {
+        // console.log('Action chosen:', action.id)
+      }).onCancel(() => {
+        // console.log('Dismissed')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     }
-
+    
     // 데이터 불러들여 처리
     async function loadData () {
       // 이미지 담기
@@ -329,7 +368,7 @@ export default {
       const blob = await fetch(base64).then(res => res.blob())
 
       // console.log('base64 ======> ', base64)
-      // console.log('blob ======> ', blob)
+      // console.log('blob ======> ', bRlob)
       const formData = new FormData() 
       // form에 파일 정보 담기
       // 이미지 파일과 파일명

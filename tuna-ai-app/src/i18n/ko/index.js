@@ -1,3 +1,6 @@
+// This is just an example,
+// so you can safely delete all default props below
+
 export default {
   failed: '번역 실패',
   success: '성공',
@@ -41,7 +44,9 @@ export default {
   detect_caption: "환자번호 ",
   detect_diagnosis: "진단명",
   detect_age: "나이",
-  detect_date: "촬영일",
+  detect_date_xray: "촬영일",
+  detect_date_ct: "촬영일",
+  detect_date_skin: "촬영일",
   detect_btn_detect: "진단",
   detect_btn_email: "의견 보내기",
   detect_btn_memo: "저장",
@@ -78,4 +83,29 @@ export default {
   setting_others_battery_detail: "배터리 사용을 최소화합니다.",
   setting_others_email: "이메일 수신 동의",
   setting_others_email_detail: "앱 업데이트, 공지사항 등의 소식을 이메일로 받습니다.",
+  setting_language_korean: "한국어",
+  setting_language_english: "영어",
+  setting_btn_reset: "설정 초기화",
+
+  notice_211129: "1.01 버전의 업데이트 내용을 확인하세요.",
+  notice_211121: "닥터헬퍼가 출시되었습니다.",
+
+  info_main: "닥터 헬퍼는 X-ray, CT 등의 의료 이미지 진단을 보조하는 인공지능 기반의 서비스입니다. 축척된 데이터의 학습을 바탕으로 의심되는 질병과 그 위치를 도출하며, 정확도는 90% 이상입니다. 현재 제공하는 세 가지 서비스에 대한 상세 설명은 아래에서 확인하실 수 있습니다.",
+  info_carousel_title: "[분류 가능한 질병]",
+  info_carousel_ex1: "예시) 진단 전",
+  info_carousel_ex2: "예시) 진단 후",
+  info_cap_chest1: "흉부 X-ray를 14가지 질병 중 하나로 분류하고 이상부위를 탐지할 수 있습니다.",
+  info_cap_chest2: "분류 정확도: 90% 이상", 
+  info_cap_brain1: "뇌 CT의 뇌종양 여부를 판별하고 뇌종양인 경우 이상부위를 탐지할 수 있습니다.", 
+  info_cap_brain2: "분류 정확도: 95% 이상", 
+  info_cap_skin1: "피부 이미지를 7가지 질병 중 하나로 분류하고 이상부위를 탐지할 수 있습니다.",
+  info_cap_skin2: "분류 정확도: 95% 이상",
+  info_chest: "흉부 X-ray가 14가지 중 어떤 질병인지 분류하고, 의심되는 모든 이상부위를 박스로 표시합니다. 진단 결과는 환자의 나이, X-ray 촬영일자와 함께 제공되며, 진단에 대한 메모를 남기고 저장할 수 있습니다.",
+  info_brain: "뇌 CT가 뇌종양인지 여부를 판별하고, 뇌종양으로 판단한 경우 이상부위를 박스로 표시합니다. 진단 결과는 환자의 나이, CT 촬영일자와 함께 제공되며, 진단에 대한 메모를 남기고 저장할 수 있습니다.",
+  info_skin: "피부 이미지가 7가지 중 어떤 질병인지 분류하고, 이상부위를 박스로 표시합니다. 진단 결과는 환자의 나이, 이미지 촬영일자와 함께 제공되며, 진단에 대한 메모를 남기고 저장할 수 있습니다.",
+
+  feedbackMicrosoftOutlook: "Microsoft Outlook",
+  feedbackGmail: "Gmail",
+  feedbackNaverMail: "네이버 메일",
+  feedbackDialer: "전화"
   }

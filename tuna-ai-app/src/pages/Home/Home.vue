@@ -63,10 +63,13 @@
             </q-card-section>           
         </q-card>
     </div>
+
+
     <!-- contents -->
     <div class="text-weight-medium  text-h6" style="font-weight: 500; margin-left: 20px ;background-color: #fbfbfb;">
         <span style="color: #e4363e; width: 2px">&#124;</span> {{ $t('home_service') }}
     </div>
+
     <div class="q-pa-md row items-start q-gutter-sm justify-between" style="margin-left: 0px">
         <q-card 
           class="my-card" 
@@ -76,6 +79,7 @@
           flat 
           style="min-width: 345px; height: 115px; border-radius: 13px; "
         >
+        <q-responsive :ratio="16/9">
         <q-card-section horizontal>
           <q-card-section>
             <q-img style="width: 75px; " src="~assets/icons/chest.png" /> 
@@ -98,7 +102,9 @@
           </q-card-section>
         </q-card-section>
         </q-card-section>
-        </q-card>
+        </q-responsive>
+        </q-card>     
+
 
         <q-card
           class="my-card" 
@@ -131,6 +137,7 @@
         </q-card-section>
         </q-card>
 
+
         <q-card
           class="my-card" 
           @click="goSkin"
@@ -158,8 +165,10 @@
             style="margin-left: 20px width:150px; height:25px"> <br>{{ $t('home_btn_completed') }}: {{num_skin_done}}</span>
           </q-card-section>
         </q-card-section>
-        </q-card-section>
+        </q-card-section>        
+
         </q-card>
+
     </div>
 
 <!-- 

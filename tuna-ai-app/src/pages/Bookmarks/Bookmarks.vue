@@ -6,7 +6,7 @@
           label=""
         />
       </template>
-      <template #title>북마크</template>
+      <template #title>{{ $t('title_bookmark') }}</template>
       <template #buttons-menu>
         <page-header-btn-menu
         />
@@ -27,7 +27,7 @@
       v-if='preferred==="Chest"'
       class="row">
         <router-link
-          v-for="image in storeChest.state.images.filter(image => image.bookmark === true)"
+          v-for="image in chestList.filter(image => image.bookmark === true)"
           :key="image.id"
           :to="`/xrays/${ image.id }`"
           class="col-6"
@@ -37,17 +37,17 @@
             :ratio="1"
           >
             <div class="absolute-top text-center">
-              {{ image.caption}}
+               {{$t("detect_caption")}}{{ image.caption}}
             </div>
           </q-img>
         </router-link>
         </div>
       
       <div 
-      v-if='preferred==="Chest"'
+      v-if='preferred==="Brain"'
       class="row">
         <router-link
-          v-for="image in storeBrain.state.images.filter(image => image.bookmark === true)"
+          v-for="image in brainList.filter(image => image.bookmark === true)"
           :key="image.id"
           :to="`/brains/${ image.id }`"
           class="col-6"
@@ -57,7 +57,7 @@
             :ratio="1"
           >
             <div class="absolute-top text-center">
-              {{ image.caption}}
+              {{$t("detect_caption")}}{{ image.caption}}
             </div>
           </q-img>
         </router-link>
@@ -67,7 +67,7 @@
       v-if='preferred==="Skin"'
       class="row">
         <router-link
-          v-for="image in storeSkin.state.images.filter(image => image.bookmark === true)"
+          v-for="image in skinList.filter(image => image.bookmark === true)"
           :key="image.id"
           :to="`/skins/${ image.id }`"
           class="col-6"
@@ -77,7 +77,7 @@
             :ratio="1"
           >
             <div class="absolute-top text-center">
-              {{ image.caption}}
+               {{$t("detect_caption")}}{{ image.caption}}
             </div>
           </q-img>
         </router-link>
@@ -90,45 +90,100 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import storeBrain from 'src/doctorStore/brain.js'
-import storeChest from 'src/doctorStore/xray.js'
-import storeSkin from 'src/doctorStore/skin.js'
+import { onActivated, onDeactivated, onUpdated, ref } from 'vue'
+import DBs from 'src/doctorStore/MongoDB.js'
+
 export default {
 name: 'Bookmarks',
+data() {
+    let label_chest = ref("")
+    let label_brain = ref("")
+    let label_skin = ref("")
+    onActivated(() => {
+      label_chest.value = this.$t("title_chests")
+      label_brain.value = this.$t("title_brains")
+      label_skin.value = this.$t("title_skins")
+    })
+    onUpdated(() => {
+      label_chest.value = this.$t("title_chests")
+      label_brain.value = this.$t("title_brains")
+      label_skin.value = this.$t("title_skins")
+    })
+    return {
+      options: [
+      {
+        label: label_chest,
+        value: 'Chest'
+      },
+      {
+        label: label_brain,
+        value: 'Brain'
+      },
+      {
+        label: label_skin,
+        value: 'Skin'
+      }
+    ],
+    }
+  },
+
+
 setup () {
   const submitResult = ref([])
+
   function onSubmit (evt) {
       const formData = new FormData(evt.target)
       const data = []
+
       for (const [ name, value ] of formData.entries()) {
         data.push({
           name,
           value
         })
       }
+
       submitResult.value = data
     }
+
+  var chestList = ref([])
+  var brainList = ref([])
+  var skinList = ref([])
+
+  onActivated(() => {
+      getValues()
+    })
+    
+  async function getValues() {
+    try{
+      chestList.value =  await DBs.getList('chest') 
+      brainList.value =  await DBs.getList('brain') 
+      skinList.value =  await DBs.getList('skin') 
+    } catch (e) {
+      console.log('error', e)
+    }    
+
+  }
+
   return {
     preferred: ref('Chest'),
-    options: [
-      {
-        label: '흉부 X-ray',
-        value: 'Chest'
-      },
-      {
-        label: '뇌 CT',
-        value: 'Brain'
-      },
-      {
-        label: '피부 이미지',
-        value: 'Skin'
-      }
-    ],
+    // options: [
+    //   {
+    //     label: '흉부 X-ray',
+    //     value: 'Chest'
+    //   },
+    //   {
+    //     label: '뇌 CT',
+    //     value: 'Brain'
+    //   },
+    //   {
+    //     label: '피부 이미지',
+    //     value: 'Skin'
+    //   }
+    // ],
     onSubmit,
-    storeBrain,
-    storeChest,
-    storeSkin
+    chestList,
+    skinList,
+    brainList
   }
 }
 }

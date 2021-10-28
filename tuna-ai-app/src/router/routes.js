@@ -97,6 +97,10 @@ const routes = [
         path: '/Bookmarks',
         component: () => import('pages/Bookmarks/Bookmarks.vue'),
       },
+      {
+        path: '/Info',
+        component: () => import('pages/Info/info.vue'),
+      },
     ]
   },
 

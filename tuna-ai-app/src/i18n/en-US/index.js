@@ -1,3 +1,6 @@
+// This is just an example,
+// so you can safely delete all default props below
+
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
@@ -41,7 +44,9 @@ export default {
   detect_caption: "Patient ",
   detect_diagnosis: "Diagnosis",
   detect_age: "Age",
-  detect_date: "Date taken",
+  detect_date_xray: "X-ray date",
+  detect_date_ct: "CT date",
+  detect_date_skin: "Image date",
   detect_btn_detect: "Diagnosis",
   detect_btn_email: "Send feedback",
   detect_btn_memo: "save",
@@ -78,4 +83,29 @@ export default {
   setting_others_battery_detail: "Minimize battery usage in the app.",
   setting_others_email: "Manage Email notification",
   setting_others_email_detail: "Receive notifications such as app updates and announcements via email.",
+  setting_language_korean: "Korean",
+  setting_language_english: "English",
+  setting_btn_reset: "Initialize settings",
+
+  notice_211129: "Please check the update contents of version 1.01.",
+  notice_211121: "Docter Helper has been released.",
+
+  info_main: "Doctor Helper is an AI-based service that assists in diagnosing medical images such as X-ray and CT. Suspected diseases and their locations are derived based on learning from accumulated data, and the accuracy is over 90%. Detailed descriptions of the three services we currently offer can be found below.",
+  info_carousel_title: "[Classifiable diseases]",
+  info_carousel_ex1: "ex) Before dignosis",
+  info_carousel_ex2: "ex) After dignosis",
+  info_cap_chest1: "Chest X-ray can be classified as one of 14 diseases and box abnormalities.",
+  info_cap_chest2: "Sorting accuracy: 90% or better", 
+  info_cap_brain1: "It is possible to determine whether a brain CT is a brain tumor and box abnormalities in the case of a brain tumor.", 
+  info_cap_brain2: "Sorting accuracy: 95% or better", 
+  info_cap_skin1: "Skin images can be classified as one of 7 diseases and box abnormalities.",
+  info_cap_skin2: "Sorting accuracy: 95% or better",
+  info_chest : "The chest X-ray classifies which of the 14 diseases it is, and all suspected abnormalities are marked with a box. Diagnosis results are provided along with the patient's age and X-ray date, and you can leave a note on the diagnosis and save it.",    
+  info_brain :"The analysis result includes 1, the original image; 2, the split image; 3, the text; 4, the age; 5, and the photographing date. By learning seven types of disease images, the results are derived as in the following example. ",
+  info_skin : "The analysis result includes 1, the original image; 2, the split image; 3, the text; 4, the age; 5, and the photographing date. By learning seven types of disease images, the results are derived as in the following example. ",
+
+  feedbackMicrosoftOutlook: "Microsoft Outlook",
+  feedbackGmail: "Gmail",
+  feedbackNaverMail: "Naver Mail",
+  feedbackDialer: "Phone"
   }
