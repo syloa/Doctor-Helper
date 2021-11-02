@@ -86,7 +86,7 @@ export default {
       {
         icon: 'home',
         label: 'menu_home',
-        separator: true
+        separator: true,
       },
       {
         icon: 'las la-x-ray',

@@ -2,6 +2,7 @@
 import io
 import shutil
 import os
+import sys
 from cv2 import matchShapes
 import torch
 import json
@@ -12,6 +13,9 @@ from flask import Flask, render_template, request, redirect
 from flask_cors import CORS, cross_origin
 
 from models.tumor_detect import tumor_detect
+sys.path.append("../tuna-ai-app")
+from ipAdress import ipAdress
+
 
 # 서버 띄우고 접속 허용
 # 'static_url_path = '로 특정 url 또는 'static_folder = ' 로 특정 폴더를 지정해주어야 해당 url 혹은 폴더의 파일은
@@ -22,6 +26,7 @@ app = Flask(__name__, static_folder='./postman')
 CORS(app)
 
 # 변수
+ipAdress = ipAdress
 port = 5001
 # True: 진단한 적 있음 / False: 진단한 적 없음
 
@@ -91,15 +96,15 @@ def predict2():
                 if img_saved != None:
                     message = {
                         "diagnosis": diagnosis,
-                        "original_image": f"http://localhost:{port}" + save_file.strip("."),
-                        "img_url": f"http://localhost:{port}" + img_saved.strip("."),
+                        "original_image": ipAdress + f"{port}" + save_file.strip("."),
+                        "img_url": ipAdress + f"{port}" + img_saved.strip("."),
                         "detection": detection,
 
                     }
                 elif img_saved == None:
                     message = {
                         "diagnosis": diagnosis,
-                        "original_image": f"http://localhost:{port}" + save_file.strip("."),
+                        "original_image": ipAdress + f"{port}" + save_file.strip("."),
                         "detection": detection,
                     }
         else:

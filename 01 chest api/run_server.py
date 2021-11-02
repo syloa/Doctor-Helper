@@ -18,9 +18,16 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 import io
 import shutil
 import os
+import sys
+sys.path.append("../tuna-ai-app")
+from ipAdress import ipAdress
+
 from PIL import Image
 from flask import Flask, render_template, request, redirect
 from flask_cors import CORS, cross_origin
+
+ipAdress = ipAdress
+port = 5000
 
 
 app = Flask(__name__)
@@ -259,7 +266,7 @@ def detect(save_img=False):
         diagnosis = {
             "name": diagnosis_label.split(' ')[0],
             "rate": diagnosis_label.split(' ')[1],
-            'img_url': "http://localhost:5000/static/exp/"+file_name+".jpg"
+            'img_url':  ipAdress + f"{port}" + "/static/exp/" + file_name + ".jpg"
         }
     else:
         diagnosis = {
