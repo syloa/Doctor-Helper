@@ -22,6 +22,7 @@
           <q-list>
 
             <template v-for="(menuItem, index) in menuList" :key="index">
+                           
               <q-item clickable
               :active="menuItem.label === 'Outbox'" 
               v-ripple
@@ -30,7 +31,7 @@
                   <q-icon :name="menuItem.icon" />
                 </q-item-section>
                 <q-item-section>
-                  {{ menuItem.label }}
+                  {{ $t(menuItem.label) }}
                 </q-item-section>
               </q-item>
               <q-separator :key="'sep' + index"  v-if="menuItem.separator" />
@@ -84,44 +85,44 @@ export default {
     const menuList = [
       {
         icon: 'home',
-        label: '홈',
-        separator: true
+        label: 'menu_home',
+        separator: true,
       },
       {
-        icon: 'las la-robot',
-        label: '흉부질환 진단',
+        icon: 'las la-x-ray',
+        label: 'menu_chest',
         separator: false
       },
       {
-        icon: 'las la-robot',
-        label: '뇌종양 진단',
+        icon: 'las la-brain',
+        label: 'menu_brain',
         separator: false
       },
       {
-        icon: 'las la-robot',
-        label: '피부암 진단',
+        icon: 'las la-allergies',
+        label: 'menu_skin',
         separator: true
       },
       {
         icon: 'settings',
-        label: '설정',
+        label: 'menu_setting',
         separator: false
       },
       {
         icon: 'feedback',
-        label: '공지사항',
+        label: 'menu_notice',
         separator: false
       },
       {
         icon: 'star',
         iconColor: 'primary',
-        label: '북마크',
+        label: 'menu_bookmark',
         separator: false
       },
       {
         icon: 'help',
         iconColor: 'primary',
-        label: '도움말',
+        label: 'menu_help',
         separator: false
       }
     ]

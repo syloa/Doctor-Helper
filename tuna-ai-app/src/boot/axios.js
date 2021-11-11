@@ -8,14 +8,19 @@ import axios from 'axios'
 // "export default () => {}" function below (which runs individually
 // for each client)
 // const api = axios.create({ baseURL: 'https://api.example.com' })
+// const url='http://http://192.168.1.147:'
+const url='http://192.168.1.147:'
+
 //chestapi
-const api = axios.create({ baseURL: 'http://localhost:5000' })
+const api = axios.create({ baseURL: url + '5000' })
 // briantumor
-const api2 = axios.create({ baseURL: 'http://localhost:5001' })
+const api2 = axios.create({ baseURL: url + '5001' })
 // skin
-const api3 = axios.create({ baseURL: 'http://localhost:5002' })
+const api3 = axios.create({ baseURL: url + '5002' })
 // db 관련 api
-const apiDB = axios.create({ baseURL: 'http://localhost:3030' })
+const apiDB = axios.create({ baseURL: url + '3030' })
+
+
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -23,6 +28,8 @@ export default boot(({ app }) => {
   app.config.globalProperties.$axios = axios
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file
+
+  app.config.globalProperties.$axios = url
 
   app.config.globalProperties.$api = api
 

@@ -51,7 +51,7 @@ def initialise_model(model_name, num_classes, grad, use_pretrained=True):
     return model
 
 
-labels = ['광선각화증', '기저세포암', '지루각화증', '피부섬유종', '비정형색소모반', '혈관종', '악성흑색종']
+labels = ['sd1', 'sd2', 'sd3', 'sd4', 'sd5', 'sd6', 'sd7']
 num_classes = 7
 model_name = 'densenet'
 grad = False
@@ -121,44 +121,47 @@ def validate(path):
             output = model(images)
     #             pred = torch.argmax(output, dim=1)
             pred = torch.argmax(output)
+
             pred = pred.item()
+
             prediction.append(pred)
     #             val_acc.update(pred.eq(labels).sum().item()/n)
     #             val_loss.update(criterion(output, labels).item())
 
     if prediction[i] == 0:
-        diagnosis = "광선각화증"
+        diagnosis = "sd1"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 1:
-        diagnosis = "기저세포암"
+        diagnosis = "sd2"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 2:
-        diagnosis = "지루각화증"
+        diagnosis = "sd2"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 3:
-        diagnosis = "피부섬유종"
+        diagnosis = "sd3"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 4:
-        diagnosis = "비정형색소모반"
+        diagnosis = "sd4"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 5:
-        diagnosis = "혈관종"
+        diagnosis = "sd5"
         img_saved = seg(path)
         return img_saved, diagnosis
     elif prediction[i] == 6:
-        diagnosis = "악성흑색종"
+        diagnosis = "sd6"
         img_saved = seg(path)
-        return img_saved, diagnosis
-        print('-----------------------------------------')
+
+    return img_saved, diagnosis
+    print('-----------------------------------------')
 #         print(labels[prediction])
-        # print(prediction)
-        # print(labels[prediction])
+    # print(prediction)
+    # print(labels[prediction])
 #         print(f'[epoch {epoch}] [iter{i/len(val_dl)}] [val loss {val_loss.avg:.5f}] [val_acc {val_acc.avg:.5f}]')
-        print('-----------------------------------------')
+    print('-----------------------------------------')
 
 #         return val_loss.avg, val_acc.avg

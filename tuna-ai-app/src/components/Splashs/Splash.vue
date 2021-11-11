@@ -1,9 +1,7 @@
 <template>
     <div>
       <Particles
-        id="tsparticles"
-        :particlesInit="particlesInit"
-        :particlesLoaded="particlesLoaded"
+        id="tsparticles"  
         :options="{
             background: {
                 color: {
@@ -88,10 +86,14 @@
         }"
       />
       <div class="q-pa-lg">
-        <div class="text-h2 text-weight-bolder row justify-center" style="color:white ; "> TUNA-AI </div>
-        <div class="text-h5 text-weight-bolder row justify-center" style="color:white ; "> Medical Open Network for AI </div>
+          <br>
+        <div class="text-h3 text-weight-bolder row justify-center" style="color:white ; "> Doctor Helper </div>
+        <div class="text-h6 text-weight-bolder row justify-center" style="color:white ; "> <br>AI Medical Imaging Analysis <br>
+ </div>
+       </div> <div class="q-pa-lg row justify-center">
+        <q-img  style="width: 345px" src="~assets/icons/doctorHelperlogo.png" /> 
       </div>
-  </div>
+      </div>
 </template>
 <script>
 export default {
